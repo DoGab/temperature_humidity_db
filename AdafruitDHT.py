@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # Copyright (c) 2014 Adafruit Industries
-# Author: Tony DiCola
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -12,17 +11,10 @@
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
 import sys
-
 import Adafruit_DHT
-
+import sqlite3
+import datetime
 
 # Parse command line parameters.
 sensor_args = { '11': Adafruit_DHT.DHT11,
@@ -52,3 +44,29 @@ if humidity is not None and temperature is not None:
 else:
     print('Failed to get reading. Try again!')
     sys.exit(1)
+
+timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+temperature = '{0:0.1f}'.format(temperature)
+humidity = '{0:0.1f}'.format(humidity)
+print('Timestamp: %s' % timestamp)
+print('Temp: %s' % temperature)
+print('Humidity: %s' % humidity)
+
+db_name='temperaturedb'
+db_path='/home/pi/databases/'
+table_name='sensordata'
+
+conn = sqlite3.connect('/home/pi/databases/temperaturedb')
+c = conn.cursor()
+
+#create table
+sql='create table if not exists ' + table_name + ' (timestamp text, temperature real, humidity real)'
+c.execute(sql)
+
+#insert data
+sql='insert into ' + table_name + " values ('" + timestamp + "'," + temperature + ',' + humidity + ')'
+c.execute(sql)
+#print('SQL: %s' % sql)
+
+conn.commit()
+conn.close()
