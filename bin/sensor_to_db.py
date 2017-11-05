@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # Copyright (c) 2014 Adafruit Industries
-# Author: Tony DiCola
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -12,17 +11,13 @@
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
+# Version: 1.0.0
+# Author: Dominic Gabriel
+
 import sys
-
 import Adafruit_DHT
-
+import sqlite3
+import datetime
 
 # Parse command line parameters.
 sensor_args = { '11': Adafruit_DHT.DHT11,
@@ -36,19 +31,37 @@ else:
     print('example: sudo ./Adafruit_DHT.py 2302 4 - Read from an AM2302 connected to GPIO #4')
     sys.exit(1)
 
-# Try to grab a sensor reading.  Use the read_retry method which will retry up
-# to 15 times to get a sensor reading (waiting 2 seconds between each retry).
 humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
 
-# Un-comment the line below to convert the temperature to Fahrenheit.
-# temperature = temperature * 9/5.0 + 32
-
-# Note that sometimes you won't get a reading and
-# the results will be null (because Linux can't
-# guarantee the timing of calls to read the sensor).
-# If this happens try again!
-if humidity is not None and temperature is not None:
-    print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
+if temperature is None and humidity is None:
+  sys.exit(1)
 else:
-    print('Failed to get reading. Try again!')
-    sys.exit(1)
+  print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
+  print('Timestamp: %s' % timestamp)
+
+temperature = '{0:0.1f}'.format(temperature)
+humidity = '{0:0.1f}'.format(humidity)
+
+db_name          = 'thermvisdb'
+db_path          = '/opt/thermvis/database/'
+data_table_name  = 'sensordata'
+
+# Connect to sqlite3 db
+conn = sqlite3.connect(db_path + db_name)
+c = conn.cursor()
+
+# Create table with columns
+# - timestamp
+# - temperature
+# - humidity
+sql='create table if not exists ' + data_table_name + ' (timestamp text, temperature real, humidity real)'
+c.execute(sql)
+
+# Insert data into table
+sql='insert into ' + data_table_name + " values ('" + timestamp + "'," + temperature + ',' + humidity + ')'
+c.execute(sql)
+#print('SQL: %s' % sql)
+
+conn.commit()
+conn.close()
