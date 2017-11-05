@@ -11,6 +11,9 @@
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
 
+# Version: 0.1
+# Author: Dominic Gabriel
+
 import sys
 import Adafruit_DHT
 import sqlite3
@@ -28,42 +31,34 @@ else:
     print('example: sudo ./Adafruit_DHT.py 2302 4 - Read from an AM2302 connected to GPIO #4')
     sys.exit(1)
 
-# Try to grab a sensor reading.  Use the read_retry method which will retry up
-# to 15 times to get a sensor reading (waiting 2 seconds between each retry).
 humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-
-# Un-comment the line below to convert the temperature to Fahrenheit.
-# temperature = temperature * 9/5.0 + 32
-
-# Note that sometimes you won't get a reading and
-# the results will be null (because Linux can't
-# guarantee the timing of calls to read the sensor).
-# If this happens try again!
-if humidity is not None and temperature is not None:
-    print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
-else:
-    print('Failed to get reading. Try again!')
-    sys.exit(1)
-
 timestamp = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
+
+if temperature is None and humidity is None:
+  sys.exit(1)
+else:
+  print('Temp={0:0.1f}*  Humidity={1:0.1f}%'.format(temperature, humidity))
+  print('Timestamp: %s' % timestamp)
+
 temperature = '{0:0.1f}'.format(temperature)
 humidity = '{0:0.1f}'.format(humidity)
-print('Timestamp: %s' % timestamp)
-print('Temp: %s' % temperature)
-print('Humidity: %s' % humidity)
 
 db_name='temperaturedb'
 db_path='/home/pi/databases/'
 table_name='sensordata'
 
-conn = sqlite3.connect('/home/pi/databases/temperaturedb')
+# Connect to sqlite3 db
+conn = sqlite3.connect(db_path + db_name)
 c = conn.cursor()
 
-#create table
+# Create table with columns
+# - timestamp
+# - temperature
+# - humidity
 sql='create table if not exists ' + table_name + ' (timestamp text, temperature real, humidity real)'
 c.execute(sql)
 
-#insert data
+# Insert data into table
 sql='insert into ' + table_name + " values ('" + timestamp + "'," + temperature + ',' + humidity + ')'
 c.execute(sql)
 #print('SQL: %s' % sql)
