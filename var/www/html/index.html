@@ -1,8 +1,31 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+
+
 window.onload = function () {
+
+var request;
+
+event.preventDefault();
+if (request) {
+   request.abort();
+}
+
+var res;
+$request = $.ajax({
+    type: 'GET',
+    dataType: 'json',
+    url: "/sqlite_query.php",
+    success : function (result) {
+        alert(result);
+        res = result;
+    },
+});
+
+//alert(res);
 
 var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
