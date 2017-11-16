@@ -1,7 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script>
 
 function getTempData(data) {
@@ -30,10 +32,27 @@ function getHumData(data) {
   return dataArray;
 }
 
+function refresh() {
+  getChart();
+}
 
-window.onload = function () {
+function getHours() {
+  hours = document.getElementById("hours").value;
+  //alert(hours);
+  if (hours == null || hours == 0) {
+    hours = 10;
+  }
+  return hours;
+}
+
+
+function getChart() {
+
 
 event.preventDefault();
+
+post_hours = getHours();
+//alert(post_hours);
 
 var request;
 request = $.ajax({
@@ -106,10 +125,23 @@ chart.render();
 });
 
 }
+
+window.onload = function () {
+
+  getChart();
+
+}
 </script>
 </head>
   <body>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <div class="container">
+      <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+      <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+      <div id="main" class="form-group">
+        <label for="usr">Last hours:</label>
+        <input type="number" name="enter" class="form-control" value="10" id="hours"/>
+        <button type="button" class="btn btn-primary" onclick="refresh()">Refresh</button>
+      </div>
+    </div>
   </body>
 </html>
