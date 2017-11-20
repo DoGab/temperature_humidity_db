@@ -1,0 +1,15 @@
+{
+  "name": "",
+  "version": "0.1.0",
+  "author": "Dominic Gabriel",
+  "summary": "",
+  "operatingsystem_support": [
+    {
+      "operatingsystem":"Raspian",
+      "operatingsystemrelease": "Jessie"
+    }
+  ],
+  "dependencies": [
+    { "name": "", "version_requirement": "" }
+  ]
+}
