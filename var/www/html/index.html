@@ -38,44 +38,46 @@ function refresh() {
 
 function getHours() {
   hours = document.getElementById("hours").value;
-  //alert(hours);
   if (hours == null || hours == 0) {
     hours = 10;
   }
+  hours = {'hours': hours};
   return hours;
 }
 
 
 function getChart() {
 
+  event.preventDefault();
 
-event.preventDefault();
+  var post_hours = getHours();
+  //console.log(post_hours);
 
-post_hours = getHours();
-//alert(post_hours);
-
-var request;
-request = $.ajax({
-    type: 'GET',
-    dataType: 'json',
+  var request;
+  request = $.ajax({
+    type: "POST",
     url: "/sqlite_query.php",
-});
+    data: post_hours,
+    dataType: 'json',
+  });
+
+  request.fail(function() {
+    console.log("error while ajax call");
+  });
 
 
-request.done(function(msg) {
-  //alert ( "Response: " + JSON.stringify(msg) );
-  console.log(msg);
+  request.done(function(msg) {
+    //console.log(msg);
 
+    var dataPoints1 = getTempData(msg);
+    //console.log(JSON.stringify(dataPoints1));
+    var dataPoints2 = getHumData(msg);
+    //console.log(dataPoints2);
 
-var dataPoints1 = getTempData(msg);
-//alert(JSON.stringify(dataPoints1));
-var dataPoints2 = getHumData(msg);
-//alert(JSON.stringify(dataPoints2));
-
-var chart = new CanvasJS.Chart("chartContainer", {
+    var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
 	title:{
-		text: "Temperature And Humidity Time Graph"
+		text: "Graph"
 	},
 	toolTip: {
 		shared: true
@@ -87,8 +89,8 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		title: "Temperature",
 		titleFontColor: "#4F81BC",
 		suffix : "°",
-    minimum : 10,
-    maximum : 40,
+		minimum : 10,
+		maximum : 40,
 		lineColor: "#4F81BC",
 		tickColor: "#4F81BC"
 	},
@@ -96,8 +98,8 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		title: "Humidity",
 		titleFontColor: "#C0504E",
 		suffix : "%",
-    minimum : 0,
-    maximum : 60,
+		minimum : 0,
+		maximum : 60,
 		lineColor: "#C0504E",
 		tickColor: "#C0504E"
 	},
@@ -110,20 +112,19 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		yValueFormatString: "#,#0.# %",
 		dataPoints: dataPoints2
 	},
-  {
+    {
 		type: "spline",
 		name: "temperature",
     xValueType: "dateTime",
 		yValueFormatString: "#,##0.00°",
 		dataPoints: dataPoints1
 	}]
-});
-chart.render();
+    });
 
+    chart.render();
 
-  return chart;
-});
-
+    return chart;
+  });
 }
 
 window.onload = function () {
@@ -134,13 +135,24 @@ window.onload = function () {
 </script>
 </head>
   <body>
-    <div class="container">
-      <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-      <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-      <div id="main" class="form-group">
-        <label for="usr">Last hours:</label>
-        <input type="number" name="enter" class="form-control" value="10" id="hours"/>
-        <button type="button" class="btn btn-primary" onclick="refresh()">Refresh</button>
+    <div id="main" class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-lg-12">
+          <h1>Temperature and Humidity Visualizer</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-lg-12">
+	  <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+	  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	  <form class="form-inline">
+	    <div class="form-group">
+	      <label for="usr">Last hours:</label>
+	      <input type="number" name="enter" class="form-control" value="10" id="hours"/>
+	      <button type="button" class="btn btn-primary" onclick="refresh()">Refresh</button>
+	    </div>
+	  </form>
+        </div>
       </div>
     </div>
   </body>
