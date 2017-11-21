@@ -17,8 +17,18 @@ This module can be used to visualize temperature and humidity data read from the
 ### The module manages the following
 
 ### Requirements
+#### Hardware
+* Raspberry Pi (Jessie)
+* Temperature/Humidity Sensor (DHT11, 22 / AM2302)
 
-* Apache Web Server
-* Sqlite3
-* PHP5.6
+#### Software
+* apache2 (2.4.10)
+* sqlite3 (3.8.7.1)
+* php5 (5.6.30)
+* php5-sqlite (5.6.30)
+* libapache2-mod-php5
+* Adafruit_Python_DHT
+
+### Usage
+
 
