@@ -46,6 +46,73 @@ function getHours() {
   return hours;
 }
 
+function calcTempAverage(data) {
+  var average = 0;
+  for(var i = 0; i < data.length; i++) {
+    average = average + data[i].temperature;
+  }
+  average = average / data.length;
+  average = average.toFixed(1);
+  var s = document.getElementById('avg-temp');
+  s.textContent = average;
+}
+
+function calcHumAverage(data) {
+  var average = 0;
+  for(var i = 0; i < data.length; i++) {
+    average = average + data[i].humidity;
+  }
+  average = average / data.length;
+  average = average.toFixed(1);
+  var s = document.getElementById('avg-hum');
+  s.textContent = average;
+}
+
+function calcTempMax(data) {
+  var max = 0;
+  for(var i = 0; i < data.length; i++) {
+    if (max < data[i].temperature) {
+      max = data[i].temperature;
+    }
+  }
+  var s = document.getElementById('max-temp');
+  s.textContent = max;
+}
+
+function calcHumMax(data) {
+  var max = 0;
+  for(var i = 0; i < data.length; i++) {
+    if (max < data[i].humidity) {
+      max = data[i].humidity;
+    }
+  }
+  var s = document.getElementById('max-hum');
+  s.textContent = max;
+}
+
+function calcTempMin(data) {
+  var min = data[0].temperature;
+  for(var i = 1; i < data.length; i++) {
+    if (min > data[i].temperature) {
+      min = data[i].temperature;
+    }
+  }
+  var s = document.getElementById('min-temp');
+  s.textContent = min;
+}
+
+function calcHumMin(data) {
+  var min = data[0].humidity;
+  for(var i = 1; i < data.length; i++) {
+    if (min > data[i].humidity) {
+      min = data[i].humidity;
+    }
+  }
+  var s = document.getElementById('min-hum');
+  s.textContent = min;
+}
+
+
 
 function getChart() {
 
@@ -68,12 +135,18 @@ function getChart() {
 
 
   request.done(function(msg) {
-    //console.log(msg);
+    // console.log(msg);
 
     var dataPoints1 = getTempData(msg);
     //console.log(JSON.stringify(dataPoints1));
     var dataPoints2 = getHumData(msg);
     //console.log(dataPoints2);
+    calcTempAverage(msg);
+    calcHumAverage(msg);
+    calcTempMax(msg);
+    calcHumMax(msg);
+    calcTempMin(msg);
+    calcHumMin(msg);
 
     var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
@@ -88,7 +161,7 @@ function getChart() {
 	},
 	axisY: {
 		title: "Temperature",
-		titleFontColor: "#4F81BC",
+		titleFontColor: "#C0504E",
 		suffix : "°C",
 		minimum : 10,
 		maximum : 40,
@@ -97,7 +170,7 @@ function getChart() {
 	},
 	axisY2: {
 		title: "Humidity",
-		titleFontColor: "#C0504E",
+		titleFontColor: "#4F81BC",
 		suffix : "%",
 		minimum : 0,
 		maximum : 60,
@@ -144,13 +217,44 @@ window.onload = function () {
       </div>
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-lg-12">
-	  <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+	  <div class="panel panel-default">
+	    <div class="panel-body">
+ 	      <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+	    </div>
+	  </div>
+	  <div class="panel panel-default">
+	    <div class="panel-body">
+              <h2>Statistics</h2>
+	      <table class="table table-condensed">
+	        <tbody>
+		  <tr>
+		    <td style="color:#C0504E; font-weight:bold">Temperature Average:</td>
+		    <td><span id="avg-temp" class="label label-default">not available</span></td>
+		    <td style="color:#4F81BC; font-weight:bold">Humidity Average:</td>
+		    <td><span id="avg-hum" class="label label-default">not available</span></td>
+		  <tr>
+		  <tr>
+		    <td>Temperature Max:</td>
+		    <td><span id="max-temp" class="label label-default">not available</span></td>
+		    <td>Humidity Max:</td>
+		    <td><span id="max-hum" class="label label-default">not available</span></td>
+		  <tr>
+		  <tr>
+		    <td>Temperature Min:</td>
+		    <td><span id="min-temp" class="label label-default">not available</span></td>
+		    <td>Humidity Min:</td>
+		    <td><span id="min-hum" class="label label-default">not available</span></td>
+		  <tr>
+	        </tbody>
+	      </table>
+	    </div>
+          </div>
 	  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 	  <form class="form-inline">
 	    <div class="form-group">
 	      <label for="usr">Last hours:</label>
 	      <input type="number" name="enter" class="form-control" value="10" id="hours"/>
-	      <button type="button" class="btn btn-primary" onclick="refresh()">Refresh</button>
+	      <button type="button" class="btn btn-primary" onclick="refresh()" onenter="refresh()" >Refresh</button>
 	    </div>
 	  </form>
         </div>
