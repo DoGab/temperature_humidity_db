@@ -43,8 +43,8 @@ else:
 temperature = '{0:0.1f}'.format(temperature)
 humidity = '{0:0.1f}'.format(humidity)
 
-db_name='temperaturedb'
-db_path='/home/pi/databases/'
+db_name='thermvisdb'
+db_path='/opt/thermvis/database/'
 table_name='sensordata'
 
 # Connect to sqlite3 db
