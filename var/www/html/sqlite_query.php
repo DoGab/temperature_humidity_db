@@ -4,14 +4,18 @@
   {
     function __construct()
     {
-      $this->open('/opt/thermvis/database/thermvisdb');
+      $this->open('/home/pi/databases/temperaturedb');
     }
   }
+
+  $json = $_POST['hours'];
+  $data = json_decode($json);
+  $hours = $data * 12;
 
   $db = new MyDB();
   if(!$db) die($db->lastErrorMsg());
 
-  $sql_query = "select * from (select * from sensordata order by timestamp desc limit 120) order by timestamp asc;";
+  $sql_query = "select * from (select * from sensordata order by timestamp desc limit " . $hours . ") order by timestamp asc;";
   $result = $db->query($sql_query);
 
   if (!$result) die("Cannot execute query.");
