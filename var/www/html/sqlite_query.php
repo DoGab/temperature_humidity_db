@@ -4,7 +4,7 @@
   {
     function __construct()
     {
-      $this->open('/home/pi/databases/temperaturedb');
+      $this->open('/opt/thermvis/database/thermvisdb');
     }
   }
 
