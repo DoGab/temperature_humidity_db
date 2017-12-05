@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="mystyle.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -136,7 +137,7 @@ function getChart() {
 
 
   request.done(function(msg) {
-    // console.log(msg);
+    //console.log(msg);
 
     var dataPoints1 = getTempData(msg);
     //console.log(JSON.stringify(dataPoints1));
@@ -213,37 +214,39 @@ window.onload = function () {
     <div id="main" class="container-fluid">
       <div class="row">
         <div class="col-xs-12 col-sm-12 col-lg-12">
-          <h1>Temperature and Humidity Visualizer</h1>
+          <h1>Thermvis</h1>
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12 col-sm-12 col-lg-12">
+        <div class="col-xs-12 col-sm-12 col-lg-8">
 	  <div class="panel panel-default">
 	    <div class="panel-body">
  	      <div id="chartContainer" style="height: 370px; width: 100%;"></div>
 	    </div>
 	  </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-lg-4">
 	  <div class="panel panel-default">
 	    <div class="panel-body">
               <h2>Statistics</h2>
 	      <table class="table table-condensed">
 	        <tbody>
 		  <tr>
-		    <td style="color:#C0504E; font-weight:bold">Temperature Average:</td>
+		    <td class="temp">Temperature Average:</td>
 		    <td><span id="avg-temp" class="label label-default">not available</span></td>
-		    <td style="color:#4F81BC; font-weight:bold">Humidity Average:</td>
+		    <td class="hum">Humidity Average:</td>
 		    <td><span id="avg-hum" class="label label-default">not available</span></td>
 		  <tr>
 		  <tr>
-		    <td>Temperature Max:</td>
+		    <td class="temp" >Temperature Max:</td>
 		    <td><span id="max-temp" class="label label-default">not available</span></td>
-		    <td>Humidity Max:</td>
+		    <td class="hum" >Humidity Max:</td>
 		    <td><span id="max-hum" class="label label-default">not available</span></td>
 		  <tr>
 		  <tr>
-		    <td>Temperature Min:</td>
+		    <td class="temp" >Temperature Min:</td>
 		    <td><span id="min-temp" class="label label-default">not available</span></td>
-		    <td>Humidity Min:</td>
+		    <td class="hum" >Humidity Min:</td>
 		    <td><span id="min-hum" class="label label-default">not available</span></td>
 		  <tr>
 	        </tbody>
@@ -251,13 +254,17 @@ window.onload = function () {
 	    </div>
           </div>
 	  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-	  <form class="form-inline">
-	    <div class="form-group">
-	      <label for="usr">Last hours:</label>
-	      <input type="number" name="enter" class="form-control" value="10" id="hours"/>
-	      <button type="button" class="btn btn-primary" onclick="refresh()" onenter="refresh()" >Refresh</button>
-	    </div>
-	  </form>
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <form class="form-inline">
+	        <div class="form-group">
+	          <label for="usr">Last hours:</label>
+	          <input type="number" name="enter" class="form-control" value="10" id="hours"/>
+	        </div>
+                <button type="button" class="btn btn-primary" onclick="refresh()" >Refresh</button>
+	      </form>
+            </div>
+          </div>
         </div>
       </div>
     </div>
