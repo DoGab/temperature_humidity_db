@@ -46,7 +46,6 @@ humidity = '{0:0.1f}'.format(humidity)
 db_name          = 'thermvisdb'
 db_path          = '/opt/thermvis/database/'
 data_table_name  = 'sensordata'
-alarm_table_name = 'alarmdata'
 
 # Connect to sqlite3 db
 conn = sqlite3.connect(db_path + db_name)
@@ -57,7 +56,6 @@ c = conn.cursor()
 # - temperature
 # - humidity
 sql='create table if not exists ' + data_table_name + ' (timestamp text, temperature real, humidity real)'
-sql='create table if not exists ' + alarm_table_name + ' (alarmid integer primary key autoincrement, sensorid integer, sensorname text, temperature_gt real default null, temperature_lt real default null, humidity_gt real default null, humidity_lt real default null)'
 c.execute(sql)
 
 # Insert data into table
