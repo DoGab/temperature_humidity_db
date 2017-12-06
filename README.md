@@ -1,4 +1,4 @@
-# Temperature and Humiidity Sensor Graphic
+# Temperature and Humidity Sensor Graphic
 
 ## Table of contents
 
@@ -33,13 +33,13 @@ The installtion covers the software installation to read sensor data and display
 1. Connect the sensor to the GPIO Ports of the Raspberry Pi
 2. Install the sensors Adafruit library
     * Described here: [Adafruit_Python_DHT](https://github.com/adafruit/Adafruit_Python_DHT)
-3. Setup an apache webserver, install sqlite3 and php5 or php7
-4. Copy the files from /var/www/html to your documentroot
+3. Setup an apache webserver, install `sqlite3` and `php5` or `php7`
+4. Copy the files from `/var/www/html` to your documentroot
     * Adjust the sqlite3 database path in the `sqlite_query.php` script
 5. Copy the file from the bin folder to your prefered location
     * Adjust the files variables to specify your sqlite3 database path and name
 6. Create a cronjob which points to your `sensor_to_db.py` in the following format:
-    * */5 * * * * python /home/pi/git-projects/temperature_humidity_db/sensor_to_db.py 2302 4 > /dev/null 2>&1
+    * `*/5 * * * * python /home/pi/git-projects/temperature_humidity_db/sensor_to_db.py 2302 4 > /dev/null 2>&1` where `2302` is the sensor name and `4` the GPIO Port
 
 ## Usage
 
