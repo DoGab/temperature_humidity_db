@@ -4,8 +4,8 @@
 
 1. [Module description - What the module does](#module-description)
 2. [Setup](#setup)
-  * [Requirements](#requirements)
-  * [Installation](#Installation)
+    * [Requirements](#requirements)
+    * [Installation](#Installation)
 3. [Usage - Configuration options and additional functionality](#usage)
 
 ## Module description
