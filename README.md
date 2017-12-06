@@ -45,3 +45,10 @@ The installtion covers the software installation to read sensor data and display
 
 Open your Raspberry pis ip address to see if the webserver is running. If it does, after at least 10 minutes, you should see a beautiful graph with your sensors data.
 
+### Desktop design
+![Desktop design](examples/thermvis_desktop_example.PNG)
+
+### Small devices design
+![Small device design](examples/thermvis_small_device_example.PNG)
+
+
