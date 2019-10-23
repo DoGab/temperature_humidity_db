@@ -51,4 +51,4 @@ Open your Raspberry pis ip address to see if the webserver is running. If it doe
 ### Small devices design
 ![Small device design](examples/thermvis_small_device_example.PNG)
 
-
+# Thanks to all contributors
