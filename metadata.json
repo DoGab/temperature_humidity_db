@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "",
   "version": "0.1.0",
   "author": "Dominic Gabriel",
@@ -7,6 +8,20 @@
     {
       "operatingsystem":"Raspian",
       "operatingsystemrelease": "Jessie"
+=======
+  "name": "thermvis",
+  "version": "1.0.0",
+  "author": "Dominic Gabriel",
+  "summary": "Visualization for temperature and humidity date read from the Adafruits DHT11, DHT22 or AM2302 sensor",
+  "description": "Visualization for temperature and humidity date read from the Adafruits DHT11, DHT22 or AM2302 sensor",
+  "operatingsystem_support": [
+    {
+      "operatingsystem":"Raspian",
+      "operatingsystemrelease": [
+        "Jessie",
+        "Stretch",
+      ]
+>>>>>>> 3cb166257550c8010b0985b30cd1b52038b7d358
     }
   ],
   "dependencies": [
